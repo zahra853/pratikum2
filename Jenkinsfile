@@ -2,12 +2,11 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/zahra853/pratikum2.git'
-            }
-        }
-
+       stage('Checkout') {
+    steps {
+        git branch: 'main', url: 'https://github.com/zahra853/pratikum2.git'
+    }
+}
         stage('Build') {
             steps {
                 sh 'go build -o app main.go'
