@@ -2,32 +2,35 @@ pipeline {
     agent any
 
     stages {
-       stage('Checkout') {
-    steps {
-        git branch: 'main', url: 'https://github.com/zahra853/pratikum2.git'
-    }
-}
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/zahra853/pratikum2.git'
+            }
+        }
+
         stage('Build') {
             steps {
-                sh 'go build -o app main.go'
+                bat 'go build -o app.exe main.go'
             }
         }
 
         stage('Test') {
             steps {
-                sh './app & sleep 3 && curl -f http://localhost:8080'
+                bat 'start /B app.exe'
+                bat 'timeout /T 3'
+                bat 'curl -f http://localhost:8080'
             }
         }
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t zahra853/pratikum2 .'
+                bat 'docker build -t zahra853/pratikum2 .'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'docker run -d -p 8080:8080 zahra853/pratikum2'
+                bat 'docker run -d -p 8080:8080 zahra853/pratikum2'
             }
         }
     }
